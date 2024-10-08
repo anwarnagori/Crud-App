@@ -27,8 +27,8 @@ function displayData(posts) {
                         <h3>${post.title}</h3>
                         <p>${post.body}</p>
                         <div class="actions">
-                            <button class="edit-btn" onclick="editPost(1)">Edit</button>
-                            <button class="delete-btn" onclick="deletePost(1)">Delete</button>
+                            <button class="edit-btn" onclick="${editPost(1)}">Edit</button>
+                            <button class="delete-btn" onclick="${deletePost(1)}">Delete</button>
                         </div>
                         `
 
