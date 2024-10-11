@@ -18,7 +18,7 @@ function displayData(posts) {
 
         postDiv.innerHTML = `
                         <div class="post-header">
-                            <img src="${post.avatar}" alt="Avatar">
+                        <img src="https://www.zubairshaikh.me/images/img/profile.jpg" alt="Avatar">
                             <div>
                                 <h3>${post.name}</h3>
                                 <small>${post.createdAt}</small>
@@ -28,7 +28,7 @@ function displayData(posts) {
                         <p>${post.body}</p>
                         <div class="actions">
                             <button class="edit-btn" id="edit-btn">Edit</button>
-                            <button class="delete-btn" id="delete-btn" onclick="${deletePost(1)}">Delete</button>
+                            <button class="delete-btn" id="delete-btn" onclick="deletePost()">Delete</button>
                         </div>
                         `
 
@@ -70,8 +70,20 @@ document.getElementById('createPostForm').addEventListener('submit', function (e
 
 })
 
-function deletePost() {
-    document.getElementById("delete-btn").addEventListener('click', function () {
-post.removeChild(postsParentDiv);    
+function deletePost(btn) {
+    fetch(apiURL, {
+        method: 'DELETE',
     })
+        .then(response => {
+            if (response.ok) {
+                const postDiv = btn.closest(".post");
+            }
+            if (postDiv) {
+                postDiv.remove();
+            }
+            else {
+                console.log('No Delete');
+            }
+        })
+        .catch(error => console.log(error));
 }
