@@ -1,4 +1,6 @@
-const apiURL = "https://66fcf615c3a184a84d1887f7.mockapi.io/api/v1/Post";
+const apiURL = 'https://66fcf615c3a184a84d1887f7.mockapi.io/api/v1/Post'
+
+
 
 function fetchPosts() {
     fetch(apiURL)
@@ -12,13 +14,13 @@ function displayData(posts) {
     const postsParentDiv = document.getElementById('posts');
     postsParentDiv.innerHTML = '';
     posts.forEach(post => {
-
+        // console.log(post)
         const postDiv = document.createElement('div');
         postDiv.classList.add('post');
 
         postDiv.innerHTML = `
                         <div class="post-header">
-                        <img src="https://www.zubairshaikh.me/images/img/profile.jpg" alt="Avatar">
+                            <img src="${post.avatar}" alt="Avatar">
                             <div>
                                 <h3>${post.name}</h3>
                                 <small>${post.createdAt}</small>
@@ -27,8 +29,8 @@ function displayData(posts) {
                         <h3>${post.title}</h3>
                         <p>${post.body}</p>
                         <div class="actions">
-                            <button class="edit-btn" id="edit-btn">Edit</button>
-                            <button class="delete-btn" id="delete-btn" onclick="deletePost()">Delete</button>
+                            <button class="edit-btn" onclick="editPost(${post.id})">Edit</button>
+                            <button class="delete-btn" onclick="deletePost(${post.id})">Delete</button>
                         </div>
                         `
 
@@ -48,10 +50,10 @@ document.getElementById('createPostForm').addEventListener('submit', function (e
     const body = document.getElementById('body').value
 
     const newPost = {
-        name,
-        title,
-        avatar,
-        body,
+        name: name,
+        title: title,
+        avatar: avatar,
+        body: body,
         createdAt: new Date().toISOString()
     }
 
@@ -70,20 +72,16 @@ document.getElementById('createPostForm').addEventListener('submit', function (e
 
 })
 
-function deletePost(btn) {
-    fetch(apiURL, {
+function deletePost(id) {
+    fetch(`${apiURL}/${id}`, {
         method: 'DELETE',
-    })
-        .then(response => {
-            if (response.ok) {
-                const postDiv = btn.closest(".post");
-            }
-            if (postDiv) {
-                postDiv.remove();
-            }
-            else {
-                console.log('No Delete');
-            }
-        })
-        .catch(error => console.log(error));
+    }).then(res => {
+        if (res.ok) {
+            return res.json();
+        }
+    }).then(data => {
+        console.log(data)
+        alert(`${data.name} successfully Deleted`);
+        fetchPosts();
+    }).catch(error => console.log(error))
 }
