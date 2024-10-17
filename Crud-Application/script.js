@@ -31,7 +31,7 @@ function displayData(posts) {
                         </div>
                         `
 
-        postsParentDiv.appendChild(postDiv)
+        postsParentDiv.appendChild(postDiv);
     });
 }
 
@@ -39,12 +39,12 @@ function displayData(posts) {
 // =======Create Post=============
 
 document.getElementById('createPostForm').addEventListener('submit', function (e) {
-    e.preventDefault()
+    e.preventDefault();
 
-    const name = document.getElementById('name').value
-    const title = document.getElementById('title').value
-    const avatar = document.getElementById('avatar').value
-    const body = document.getElementById('body').value
+    const name = document.getElementById('name').value;
+    const title = document.getElementById('title').value;
+    const avatar = document.getElementById('avatar').value;
+    const body = document.getElementById('body').value;
 
     const newPost = {
         name: name,
@@ -53,8 +53,6 @@ document.getElementById('createPostForm').addEventListener('submit', function (e
         body: body,
         createdAt: new Date().toISOString()
     }
-
-    console.log(newPost)
 
     fetch(apiURL, {
         method: 'POST',
@@ -80,4 +78,50 @@ function deletePost(id) {
         alert(`${data.name} successfully deleted`);
         fetchPosts();
     }).catch(error => console.log(error));
+}
+
+function editPost(id) {
+    fetch(`${apiURL}/${id}`, {
+        method: 'PUT',
+    }).then(response => response.json())
+        .then(data => {
+            document.getElementById("create-post").style.display = 'none';
+            document.getElementById("update-post").style.display = 'block';
+
+            document.getElementById("update-name").value = data.name;
+            document.getElementById("update-title").value = data.title;
+            document.getElementById("update-avatar").value = data.avatar;
+            document.getElementById("update-body").value = data.body;
+
+            document.getElementById("updatePostForm").addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const name = document.getElementById('update-name').value;
+                const title = document.getElementById('update-title').value;
+                const avatar = document.getElementById('update-avatar').value;
+                const body = document.getElementById('update-body').value;
+
+                const updatePost = {
+                    name: name,
+                    title: title,
+                    avatar: avatar,
+                    body: body,
+                    createdAt: new Date().toISOString()
+                }
+                fetch(`${apiURL}/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(updatePost)
+                }).then(response => response.json())
+                    .then(data => {
+                        alert(`${data.name} successfully updated`);
+                        fetchPosts();
+                        document.getElementById("create-post").style.display = 'block';
+                        document.getElementById("update-post").style.display = 'none';
+                    }).catch(error => console.log(error));
+            })
+        })
+        .catch(error => console.log(error));
 }
