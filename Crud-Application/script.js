@@ -1,7 +1,5 @@
 const apiURL = 'https://66fcf615c3a184a84d1887f7.mockapi.io/api/v1/Post'
 
-
-
 function fetchPosts() {
     fetch(apiURL)
         .then(response => response.json())
@@ -14,7 +12,6 @@ function displayData(posts) {
     const postsParentDiv = document.getElementById('posts');
     postsParentDiv.innerHTML = '';
     posts.forEach(post => {
-        // console.log(post)
         const postDiv = document.createElement('div');
         postDiv.classList.add('post');
 
@@ -75,13 +72,12 @@ document.getElementById('createPostForm').addEventListener('submit', function (e
 function deletePost(id) {
     fetch(`${apiURL}/${id}`, {
         method: 'DELETE',
-    }).then(res => {
-        if (res.ok) {
-            return res.json();
+    }).then(response => {
+        if (response.ok) {
+            return response.json();
         }
     }).then(data => {
-        console.log(data)
-        alert(`${data.name} successfully Deleted`);
+        alert(`${data.name} successfully deleted`);
         fetchPosts();
-    }).catch(error => console.log(error))
+    }).catch(error => console.log(error));
 }
