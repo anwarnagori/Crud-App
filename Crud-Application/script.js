@@ -63,7 +63,7 @@ document.getElementById('createPostForm').addEventListener('submit', function (e
     })
         .then(response => response.json())
         .then(data => {
-            displayData([data]);
+            fetchPosts();
             document.getElementById('createPostForm').reset();
         })
         .catch(error => console.log(error))
