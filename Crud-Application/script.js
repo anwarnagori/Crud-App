@@ -62,9 +62,11 @@ document.getElementById('createPostForm').addEventListener('submit', function (e
         body: JSON.stringify(newPost)
     })
         .then(response => response.json())
-        .then(data => console.log(data))
+        .then(data => {
+            displayData([data]);
+            document.getElementById('createPostForm').reset();
+        })
         .catch(error => console.log(error))
-
 })
 
 function deletePost(id) {
